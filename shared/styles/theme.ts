@@ -43,6 +43,47 @@ const defaultColors: Colors = {
   },
 };
 
+const rosePineColors: Colors = {
+  transparent: "transparent",
+  almostBlack: "#191724", // Base
+  lightBlack: "#26233a", // Overlay
+  almostWhite: "#e0def4", // Text
+  veryDarkBlue: "#191724", // Base
+  slate: "#6e6a86", // Muted
+  slateLight: "#908caa", // Subtle
+  slateDark: "#26233a", // Overlay
+  smoke: "#1f1d2e", // Surface
+  smokeLight: "#21202e", // Highlight Low
+  smokeDark: "#403d52", // Highlight Med
+  white: "#e0def4", // Text
+  white05: "rgba(224, 222, 244, 0.05)",
+  white10: "rgba(224, 222, 244, 0.1)",
+  white50: "rgba(224, 222, 244, 0.5)",
+  white75: "rgba(224, 222, 244, 0.75)",
+  black: "#191724", // Base
+  black05: "rgba(25, 23, 36, 0.05)",
+  black10: "rgba(25, 23, 36, 0.1)",
+  black50: "rgba(25, 23, 36, 0.50)",
+  black75: "rgba(25, 23, 36, 0.75)",
+  accent: "#c4a7e7", // Iris
+  yellow: "#f6c177", // Gold
+  warmGrey: "#1f1d2e", // Surface
+  danger: "#eb6f92", // Love
+  warning: "#f6c177", // Gold
+  success: "#31748f", // Pine
+  info: "#9ccfd8", // Foam
+  brand: {
+    red: "#eb6f92", // Love
+    pink: "#ebbcba", // Rose
+    purple: "#c4a7e7", // Iris
+    blue: "#31748f", // Pine
+    marine: "#9ccfd8", // Foam
+    dusk: "#c4a7e7", // Iris
+    green: "#31748f", // Pine
+    yellow: "#f6c177", // Gold
+  },
+};
+
 const spacing = {
   sidebarWidth: 260,
   sidebarRightWidth: 300,
@@ -252,6 +293,87 @@ export const buildPitchBlackTheme = (input: Partial<Colors>) => {
   };
 };
 
+export const buildRosePineTheme = (
+  input: Partial<Colors> = {}
+): DefaultTheme => {
+  const colors = buildBaseTheme({
+    ...rosePineColors,
+    ...input,
+  });
+
+  return {
+    ...colors,
+    isDark: true,
+    background: "#191724", // Base
+    backgroundSecondary: "#1f1d2e", // Surface
+    backgroundTertiary: "#26233a", // Overlay
+    backgroundQuaternary: "#403d52", // Highlight Med
+    link: "#c4a7e7", // Iris
+    text: "#e0def4", // Text
+    cursor: "#e0def4", // Text
+    textSecondary: "#908caa", // Subtle
+    textTertiary: "#6e6a86", // Muted
+    textDiffInserted: "#e0def4",
+    textDiffInsertedBackground: "rgba(49, 116, 143, 0.3)", // Pine with transparency
+    textDiffDeleted: "#6e6a86",
+    textDiffDeletedBackground: "rgba(235, 111, 146, 0.15)", // Love with transparency
+    placeholder: "#6e6a86", // Muted
+    sidebarBackground: "#191724", // Base
+    sidebarActiveBackground: "#21202e", // Highlight Low
+    sidebarControlHoverBackground: "rgba(224, 222, 244, 0.1)",
+    sidebarDraftBorder: "#403d52", // Highlight Med
+    sidebarText: "#908caa", // Subtle
+    backdrop: "rgba(25, 23, 36, 0.5)",
+    shadow: "rgba(25, 23, 36, 0.6)",
+
+    modalBackdrop: "rgba(25, 23, 36, 0.5)",
+    modalBackground: "#1f1d2e", // Surface
+    modalShadow:
+      "0 0 0 1px rgba(25, 23, 36, 0.1), 0 8px 16px rgba(25, 23, 36, 0.3), 0 2px 4px rgba(25, 23, 36, 0.08)",
+
+    menuItemSelected: "#21202e", // Highlight Low
+    menuBackground: "#1f1d2e", // Surface
+    menuShadow:
+      "0 0 0 1px #26233a, 0 8px 16px rgba(25, 23, 36, 0.3), 0 2px 4px rgba(25, 23, 36, 0.08)",
+    divider: "#26233a", // Overlay
+    titleBarDivider: "#26233a", // Overlay
+    inputBorder: "#26233a", // Overlay
+    inputBorderFocused: "#6e6a86", // Muted
+    listItemHoverBackground: "rgba(224, 222, 244, 0.05)",
+    mentionBackground: "#21202e", // Highlight Low
+    mentionHoverBackground: "#403d52", // Highlight Med
+    tableSelected: "#c4a7e7", // Iris
+    buttonNeutralBackground: "#26233a", // Overlay
+    buttonNeutralText: "#e0def4", // Text
+    buttonNeutralBorder: "#403d52", // Highlight Med
+    tooltipBackground: "#e0def4", // Text
+    tooltipText: "#191724", // Base
+    toastBackground: "#1f1d2e", // Surface
+    toastText: "#e0def4", // Text
+    quote: "#e0def4", // Text
+    code: "#e0def4", // Text
+    codeBackground: "#21202e", // Highlight Low
+    codeBorder: "rgba(224, 222, 244, 0.1)",
+    codeTag: "#31748f", // Pine
+    codeString: "#f6c177", // Gold
+    codeKeyword: "#c4a7e7", // Iris
+    codeFunction: "#ebbcba", // Rose
+    codeClassName: "#9ccfd8", // Foam
+    codeImportant: "#eb6f92", // Love
+    codeAttr: "#9ccfd8", // Foam
+    embedBorder: "rgba(25, 23, 36, 0.5)",
+    horizontalRule: "#26233a", // Overlay
+    noticeInfoText: "#e0def4", // Text
+    noticeTipText: "#191724", // Base (contrasting)
+    noticeWarningText: "#191724", // Base (contrasting)
+    noticeSuccessText: "#191724", // Base (contrasting)
+    progressBarBackground: "#6e6a86", // Muted
+    scrollbarBackground: "#191724", // Base
+    scrollbarThumb: "#26233a", // Overlay
+  };
+};
+
 export const light = buildLightTheme(defaultColors);
+export const rosePine = buildRosePineTheme();
 
 export default light as DefaultTheme;
