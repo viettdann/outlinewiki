@@ -153,11 +153,26 @@ export const renderShare = async (ctx: Context, next: Next) => {
 
   try {
     team = await getTeamFromContext(ctx);
-    const result = await documentLoader({
-      id: documentSlug,
-      shareId,
-      teamId: team?.id,
-    });
+
+    // First try to load document in preview mode for title extraction
+    let result;
+    try {
+      result = await documentLoader({
+        id: documentSlug,
+        shareId,
+        teamId: team?.id,
+        previewOnly: true,
+      });
+    } catch (_previewErr) {
+      // If preview fails, try normal mode (for public shares or authenticated users)
+      result = await documentLoader({
+        id: documentSlug,
+        shareId,
+        teamId: team?.id,
+        user: ctx.state.user,
+      });
+    }
+
     share = result.share;
     if (isUUID(shareId) && share?.urlId) {
       // Redirect temporarily because the url slug
