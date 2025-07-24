@@ -43,20 +43,18 @@ RUN  apt-get update \
     && apt-get install -y wget \
     && rm -rf /var/lib/apt/lists/*
 # Create a non-root user compatible with Debian and BusyBox based images
-RUN addgroup --gid 1001 nodejs && \
-    adduser --uid 1001 --ingroup nodejs nodejs && \
-    chown -R nodejs:nodejs $APP_PATH/build && \
+RUN chown -R node:node $APP_PATH/build && \
     mkdir -p /var/lib/outline && \
-    chown -R nodejs:nodejs /var/lib/outline
+    chown -R node:node /var/lib/outline
 
 ENV FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
 RUN mkdir -p "$FILE_STORAGE_LOCAL_ROOT_DIR" && \
-    chown -R nodejs:nodejs "$FILE_STORAGE_LOCAL_ROOT_DIR" && \
+    chown -R node:node "$FILE_STORAGE_LOCAL_ROOT_DIR" && \
     chmod 1777 "$FILE_STORAGE_LOCAL_ROOT_DIR"
 
 VOLUME /var/lib/outline/data
 
-USER nodejs
+USER node
 
 HEALTHCHECK --interval=1m CMD wget -qO- "http://localhost:${PORT:-3000}/_health" | grep -q "OK" || exit 1
 
