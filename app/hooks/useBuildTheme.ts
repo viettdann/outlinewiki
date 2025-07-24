@@ -28,23 +28,27 @@ export default function useBuildTheme(
   const isPrinting = useMediaQuery("print");
   const resolvedTheme = overrideTheme ?? ui.resolvedTheme;
 
-  const theme = useMemo(
-    () =>
-      isPrinting
-        ? buildLightTheme(customTheme)
-        : isMobile
-          ? resolvedTheme === "dark"
-            ? buildPitchBlackTheme(customTheme)
-            : resolvedTheme === "rosepine"
-              ? buildRosePineTheme(customTheme)
-              : buildLightTheme(customTheme)
-          : resolvedTheme === "dark"
-            ? buildDarkTheme(customTheme)
-            : resolvedTheme === "rosepine"
-              ? buildRosePineTheme(customTheme)
-              : buildLightTheme(customTheme),
-    [customTheme, isMobile, isPrinting, resolvedTheme]
-  );
+  const theme = useMemo(() => {
+    const safeCustomTheme = customTheme || {};
+
+    if (isPrinting) {
+      return buildLightTheme(safeCustomTheme);
+    }
+
+    const getThemeBuilder = (themeName: string, isMobile: boolean) => {
+      switch (themeName) {
+        case "dark":
+          return isMobile ? buildPitchBlackTheme : buildDarkTheme;
+        case "rosepine":
+          return buildRosePineTheme;
+        default:
+          return buildLightTheme;
+      }
+    };
+
+    const themeBuilder = getThemeBuilder(resolvedTheme, isMobile);
+    return themeBuilder(safeCustomTheme);
+  }, [customTheme, isMobile, isPrinting, resolvedTheme]);
 
   return theme;
 }
