@@ -49,12 +49,11 @@ async function teamCreator({
   );
 
   const availableSubdomain = await findAvailableSubdomain(team, subdomain);
-  await team.update(
-    { subdomain: availableSubdomain },
-    {
-      transaction: ctx.context.transaction,
-    }
-  );
+  const updateOptions: any = {};
+  if (ctx.context?.transaction) {
+    updateOptions.transaction = ctx.context.transaction;
+  }
+  await team.update({ subdomain: availableSubdomain }, updateOptions);
 
   return team;
 }
