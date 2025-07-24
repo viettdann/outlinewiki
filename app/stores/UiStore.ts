@@ -15,6 +15,7 @@ let sidebarHidden = window.location.search.includes("sidebarHidden=true");
 export enum Theme {
   Light = "light",
   Dark = "dark",
+  RosePine = "rosepine",
   System = "system",
 }
 

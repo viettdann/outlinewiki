@@ -44,6 +44,7 @@ function Preferences() {
       [
         { type: "item", label: t("Light"), value: Theme.Light },
         { type: "item", label: t("Dark"), value: Theme.Dark },
+        { type: "item", label: "Rosé Pine", value: Theme.RosePine },
         { type: "item", label: t("System"), value: Theme.System },
       ] satisfies Option[],
     [t]

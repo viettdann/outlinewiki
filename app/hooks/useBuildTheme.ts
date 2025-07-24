@@ -4,6 +4,7 @@ import {
   buildDarkTheme,
   buildLightTheme,
   buildPitchBlackTheme,
+  buildRosePineTheme,
 } from "@shared/styles/theme";
 import { CustomTheme } from "@shared/types";
 import type { Theme } from "~/stores/UiStore";
@@ -34,10 +35,14 @@ export default function useBuildTheme(
         : isMobile
           ? resolvedTheme === "dark"
             ? buildPitchBlackTheme(customTheme)
-            : buildLightTheme(customTheme)
+            : resolvedTheme === "rosepine"
+              ? buildRosePineTheme(customTheme)
+              : buildLightTheme(customTheme)
           : resolvedTheme === "dark"
             ? buildDarkTheme(customTheme)
-            : buildLightTheme(customTheme),
+            : resolvedTheme === "rosepine"
+              ? buildRosePineTheme(customTheme)
+              : buildLightTheme(customTheme),
     [customTheme, isMobile, isPrinting, resolvedTheme]
   );
 
