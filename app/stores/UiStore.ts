@@ -101,7 +101,7 @@ class UiStore {
       data.sidebarRightWidth || defaultTheme.sidebarRightWidth;
     this.tocVisible = data.tocVisible;
     this.commentsExpanded = !!data.commentsExpanded;
-    this.theme = data.theme || Theme.System;
+    this.theme = data.theme || Theme.RosePine;
 
     // system theme listeners
     if (window.matchMedia) {

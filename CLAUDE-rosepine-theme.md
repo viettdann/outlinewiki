@@ -7,9 +7,10 @@ Complete Rosé Pine color scheme implementation and UI integration for the Outli
 
 ## Files Modified
 - `/shared/styles/theme.ts` - Added `rosePineColors` palette and `buildRosePineTheme()` function
-- `/app/stores/UiStore.ts` - Added `RosePine` enum value to Theme enum
+- `/app/stores/UiStore.ts` - Added `RosePine` enum value to Theme enum and set as default theme
 - `/app/scenes/Settings/Preferences.tsx` - Added "Rosé Pine" option to theme selector dropdown
 - `/app/hooks/useBuildTheme.ts` - Added theme building logic for Rosé Pine theme
+- `/app/actions/definitions/settings.tsx` - Added Rose Pine theme action for command palette
 
 ## Implementation Overview
 
@@ -147,7 +148,8 @@ const theme = useMemo(
 - ✅ Mobile support with consistent experience across devices
 
 ### User Experience
-- **Access**: Settings → Preferences → Appearance → "Rosé Pine"
+- **Access**: Settings → Preferences → Appearance → "Rosé Pine" OR Command Palette (Cmd/Ctrl+K) → "rose pine"
+- **Default Theme**: Rose Pine is now the default theme for new users
 - **Persistence**: Theme choice saved across browser sessions
 - **Responsiveness**: Instant theme switching with smooth transitions
 - **Cross-platform**: Consistent experience on desktop and mobile
@@ -164,18 +166,24 @@ const theme = useMemo(
 
 ### Theme Selection Flow
 The complete theme selection process:
-1. User selects theme in Settings → Preferences → Appearance
-2. `handleThemeChange` calls `ui.setTheme(theme as Theme)`
+1. User selects theme in Settings → Preferences → Appearance OR Command Palette
+2. `handleThemeChange` calls `ui.setTheme(theme as Theme)` OR action executes `stores.ui.setTheme(Theme.RosePine)`
 3. `UiStore.setTheme()` updates the observable theme value
 4. `useBuildTheme` hook detects change via `ui.resolvedTheme`
 5. Hook returns appropriate theme object based on selection
 6. Styled-components ThemeProvider updates all components
+
+### Default Theme Configuration
+- **Location**: `app/stores/UiStore.ts:104`
+- **Setting**: `this.theme = data.theme || Theme.RosePine;`
+- **Behavior**: Rose Pine is now the default theme for new users or when no theme preference is stored
 
 ### Implementation Details
 - Source colors from `rose_pine.md` in project root
 - Theme follows Outline's established patterns in `shared/styles/theme.ts`
 - Maintains compatibility with existing styled-components setup
 - Full integration with theme selection UI completed
+- Command palette integration with action system and analytics tracking
 
 ### Troubleshooting
 - If theme doesn't appear: Check Theme enum includes the new value
@@ -185,6 +193,7 @@ The complete theme selection process:
 ## Related Files
 - `shared/styles/theme.ts` - Core theme definitions and buildRosePineTheme function
 - `app/hooks/useBuildTheme.ts` - Theme building logic with Rosé Pine integration
-- `app/stores/UiStore.ts` - Theme state management with RosePine enum
+- `app/stores/UiStore.ts` - Theme state management with RosePine enum and default theme setting
 - `app/scenes/Settings/Preferences.tsx` - Theme selection UI
+- `app/actions/definitions/settings.tsx` - Command palette theme action with analytics
 - `rose_pine.md` - Original color palette source

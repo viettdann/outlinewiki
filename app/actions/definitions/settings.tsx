@@ -1,4 +1,4 @@
-import { SunIcon, MoonIcon, BrowserIcon } from "outline-icons";
+import { SunIcon, MoonIcon, BrowserIcon, PaletteIcon } from "outline-icons";
 import stores from "~/stores";
 import { Theme } from "~/stores/UiStore";
 import { createAction } from "~/actions";
@@ -37,6 +37,17 @@ export const changeToSystemTheme = createAction({
   perform: () => stores.ui.setTheme(Theme.System),
 });
 
+export const changeToRosePineTheme = createAction({
+  name: () => "Rosé Pine",
+  analyticsName: "Change to rose pine theme",
+  icon: <PaletteIcon />,
+  iconInContextMenu: false,
+  keywords: "theme rose pine rosepine purple",
+  section: SettingsSection,
+  selected: () => stores.ui.theme === "rosepine",
+  perform: () => stores.ui.setTheme(Theme.RosePine),
+});
+
 export const changeTheme = createAction({
   name: ({ t, isContextMenu }) =>
     isContextMenu ? t("Appearance") : t("Change theme"),
@@ -47,7 +58,12 @@ export const changeTheme = createAction({
   },
   keywords: "appearance display",
   section: SettingsSection,
-  children: [changeToLightTheme, changeToDarkTheme, changeToSystemTheme],
+  children: [
+    changeToLightTheme,
+    changeToDarkTheme,
+    changeToRosePineTheme,
+    changeToSystemTheme,
+  ],
 });
 
 export const rootSettingsActions = [changeTheme];
