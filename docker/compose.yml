@@ -20,7 +20,11 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
     env_file:
+<<<<<<<< HEAD:docker/docker-compose.yml
       - .env
+========
+      - ../.env
+>>>>>>>> fa237c1 (build(docker): add docker configuration files and update ignore list):docker/compose.yml
     ports:
       - 3000:3000
 volumes:
