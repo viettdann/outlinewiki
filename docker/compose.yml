@@ -4,6 +4,8 @@ services:
     ports:
       - "127.0.0.1:6379:6379"
     user: "redis:redis"
+    volumes:
+      - redis_data:/data
   postgres:
     image: postgres:17
     ports:
@@ -19,8 +21,12 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile
-    env_file: ../.env
+    env_file: .env
     ports:
       - 3000:3000
+    volumes:
+      - outline_data:/var/lib/outline/data
 volumes:
   postgres_data:
+  redis_data:
+  outline_data:

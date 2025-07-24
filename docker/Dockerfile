@@ -6,7 +6,7 @@ WORKDIR $APP_PATH
 COPY ./package.json ./yarn.lock ./
 COPY ./patches ./patches
 
-RUN apt-get update && apt-get install -y cmake
+RUN apt-get update && apt-get install -y cmake git
 
 FROM build-base AS deps
 ENV NODE_OPTIONS="--max-old-space-size=24000"
