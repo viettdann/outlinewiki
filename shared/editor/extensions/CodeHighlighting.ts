@@ -104,25 +104,82 @@ function getDecorations({
         const lineCount =
           (block.node.textContent.match(/\n/g) || []).length + 1;
         const gutterWidth = String(lineCount).length;
+        const isWrapping = block.node.attrs.wrap;
 
-        const lineCountText = new Array(lineCount)
-          .fill(0)
-          .map((_, i) => padStart(`${i + 1}`, gutterWidth, " "))
-          .join("\n");
+        if (isWrapping) {
+          // For wrapped code blocks, create inline decorations for each line start
+          const lines = block.node.textContent.split("\n");
+          let currentPos = startPos;
 
-        lineDecorations.push(
-          Decoration.node(
-            block.pos,
-            block.pos + block.node.nodeSize,
-            {
-              "data-line-numbers": `${lineCountText}`,
-              style: `--line-number-gutter-width: ${gutterWidth};`,
-            },
-            {
-              key: `line-${lineCount}-gutter`,
-            }
-          )
-        );
+          lines.forEach((line, index) => {
+            const lineNumber = padStart(`${index + 1}`, gutterWidth, " ");
+
+            lineDecorations.push(
+              Decoration.widget(
+                currentPos,
+                () => {
+                  const span = document.createElement("span");
+                  span.className = "line-number-inline";
+                  span.textContent = lineNumber;
+                  span.style.cssText = `
+                    position: absolute;
+                    left: 0.5em;
+                    width: calc(${gutterWidth} * 1em + 0.25em);
+                    font-size: 13px;
+                    line-height: 1.4em;
+                    text-align: right;
+                    font-variant-numeric: tabular-nums;
+                    user-select: none;
+                    pointer-events: none;
+                  `;
+                  return span;
+                },
+                {
+                  key: `inline-line-${index + 1}`,
+                  side: -1,
+                }
+              )
+            );
+
+            // Move to the next line (including the newline character, except for the last line)
+            currentPos += line.length + (index < lines.length - 1 ? 1 : 0);
+          });
+
+          // Set CSS custom property for gutter width
+          lineDecorations.push(
+            Decoration.node(
+              block.pos,
+              block.pos + block.node.nodeSize,
+              {
+                style: `--line-number-gutter-width: ${gutterWidth};`,
+                class: "with-inline-numbers",
+              },
+              {
+                key: `inline-gutter-${lineCount}`,
+              }
+            )
+          );
+        } else {
+          // Default behavior for non-wrapped code blocks
+          const lineCountText = new Array(lineCount)
+            .fill(0)
+            .map((_, i) => padStart(`${i + 1}`, gutterWidth, " "))
+            .join("\n");
+
+          lineDecorations.push(
+            Decoration.node(
+              block.pos,
+              block.pos + block.node.nodeSize,
+              {
+                "data-line-numbers": `${lineCountText}`,
+                style: `--line-number-gutter-width: ${gutterWidth};`,
+              },
+              {
+                key: `line-${lineCount}-gutter`,
+              }
+            )
+          );
+        }
       }
 
       cache[block.pos] = {

@@ -64,6 +64,10 @@ export default class CodeFence extends Node {
           default: DEFAULT_LANGUAGE,
           validate: "string",
         },
+        wrap: {
+          default: false,
+          validate: "boolean",
+        },
       },
       content: "text*",
       marks: "comment",
@@ -79,6 +83,7 @@ export default class CodeFence extends Node {
             node.querySelector("code") || node,
           getAttrs: (dom: HTMLDivElement) => ({
             language: dom.dataset.language,
+            wrap: dom.dataset.wrap === "true",
           }),
         },
         {
@@ -99,8 +104,9 @@ export default class CodeFence extends Node {
         {
           class: `code-block ${
             this.showLineNumbers ? "with-line-numbers" : ""
-          }`,
+          } ${node.attrs.wrap ? "with-line-wrap" : ""}`,
           "data-language": node.attrs.language,
+          "data-wrap": node.attrs.wrap,
         },
         ["pre", ["code", { spellCheck: "false" }, 0]],
       ],

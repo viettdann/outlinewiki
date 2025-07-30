@@ -1400,6 +1400,14 @@ mark {
     margin: -0.5em 0 0 0;
 }
 
+.code-block.with-line-wrap {
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: hidden;
+  }
+}
+
 .code-block.with-line-numbers {
   pre {
     padding-left: calc(var(--line-number-gutter-width, 0) * 1em + 1.5em);
@@ -1422,6 +1430,34 @@ mark {
     text-align: right;
     font-variant-numeric: tabular-nums;
     user-select: none;
+  }
+
+  /* When line wrapping is enabled, hide the absolute positioned line numbers */
+  &.with-line-wrap::after {
+    display: none;
+  }
+
+  /* Styling for wrapped code blocks with inline line numbers */
+  &.with-line-wrap.with-inline-numbers {
+    pre {
+      position: relative;
+      padding-left: calc(var(--line-number-gutter-width, 0) * 1em + 1.5em);
+    }
+
+    .line-number-inline {
+      position: absolute;
+      left: 0.5em;
+      color: ${props.theme.textTertiary};
+      font-family: ${props.theme.fontFamilyMono};
+      font-size: 13px;
+      line-height: 1.4em;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      user-select: none;
+      background: ${props.theme.codeBackground};
+      pointer-events: none;
+      z-index: 1;
+    }
   }
 }
 

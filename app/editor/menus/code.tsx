@@ -1,4 +1,4 @@
-import { CopyIcon, ExpandedIcon } from "outline-icons";
+import { CopyIcon, ExpandedIcon, AlignFullWidthIcon } from "outline-icons";
 import { Node as ProseMirrorNode } from "prosemirror-model";
 import { EditorState } from "prosemirror-state";
 import {
@@ -52,6 +52,23 @@ export default function codeMenuItems(
     {
       visible: !readOnly,
       name: "code_block",
+      icon: <AlignFullWidthIcon />,
+      label: node.attrs.wrap ? "Unwrap lines" : "Wrap lines",
+      tooltip: node.attrs.wrap
+        ? "Disable line wrapping"
+        : "Enable line wrapping",
+      attrs: {
+        language: node.attrs.language,
+        wrap: !node.attrs.wrap,
+      },
+    },
+    {
+      name: "separator",
+      visible: !readOnly,
+    },
+    {
+      visible: !readOnly,
+      name: "code_block",
       icon: <ExpandedIcon />,
       label: getLabelForLanguage(node.attrs.language ?? "none"),
       children: languageMenuItems,
@@ -73,5 +90,6 @@ const langToMenuItem = ({
   active: () => node.attrs.language === value,
   attrs: {
     language: value,
+    wrap: node.attrs.wrap,
   },
 });
