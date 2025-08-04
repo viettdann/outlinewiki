@@ -17,7 +17,6 @@ type Props = {
   teamId?: string;
   user?: User;
   includeState?: boolean;
-  previewOnly?: boolean;
 };
 
 type Result = {
@@ -32,7 +31,6 @@ export default async function loadDocument({
   teamId,
   user,
   includeState,
-  previewOnly,
 }: Props): Promise<Result> {
   let document: Document | null = null;
   let collection: Collection | null = null;
@@ -138,14 +136,6 @@ export default async function loadDocument({
     // We already know that there's either no logged in user or the user doesn't
     // have permission to read the document, so we can throw an error.
     if (!share.published) {
-      // Allow preview-only access for private shares to get basic metadata
-      if (previewOnly) {
-        return {
-          document,
-          share,
-          collection,
-        };
-      }
       throw AuthorizationError();
     }
 
