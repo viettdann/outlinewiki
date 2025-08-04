@@ -5,16 +5,16 @@ ARG APP_PATH
 WORKDIR $APP_PATH
 COPY ./package.json ./yarn.lock ./
 COPY ./patches ./patches
-
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y cmake git
 
 FROM build-base AS deps
 ENV NODE_OPTIONS="--max-old-space-size=24000"
 
-RUN yarn install --production=true --frozen-lockfile
+RUN --mount=type=cache,mode=0777,target=~/.yarn yarn install --production=true --frozen-lockfile
 
 FROM deps AS builder
-RUN yarn install --no-optional --frozen-lockfile
+RUN --mount=type=cache,mode=0777,target=~/.yarn yarn install --no-optional --frozen-lockfile
 
 COPY . .
 ARG CDN_URL
@@ -38,6 +38,7 @@ COPY ./package.json ./package.json
 COPY --from=deps $APP_PATH/node_modules ./node_modules
 COPY --from=builder $APP_PATH/build ./build
 
+ARG DEBIAN_FRONTEND=noninteractive
 # Install wget to healthcheck the server
 RUN  apt-get update \
     && apt-get install -y wget \
